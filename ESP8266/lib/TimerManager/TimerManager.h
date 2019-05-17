@@ -29,4 +29,10 @@ public:
      */
     static long GetCurrentRTCTime();
 
+    /**
+     * @brief Coloca o esp8266 em modo sleep por x segundos
+     * 
+     */
+    static void SetSleep(int Seconds);
+
 };

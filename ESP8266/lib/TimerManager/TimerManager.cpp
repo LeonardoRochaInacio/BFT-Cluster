@@ -1,6 +1,6 @@
-#include "TimerManager.h"
-#include "Arduino.h"
-#include "sys/time.h"
+#include <TimerManager.h>
+#include <Arduino.h>
+#include <sys/time.h>
 #include <iostream>
 
 TimerManager::TimerManager()
@@ -22,4 +22,9 @@ void TimerManager::SetRTCTime(long Timestamp_Value)
 long TimerManager::GetCurrentRTCTime()
 {
     return time(NULL);
+}
+
+void TimerManager::SetSleep(int Seconds)
+{
+    ESP.deepSleep(Seconds*(1000000));
 }

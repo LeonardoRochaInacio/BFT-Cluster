@@ -1,3 +1,4 @@
+#pragma once
 /**
  * @brief Classe para ser usada estaticamente para armazenamento de dados na EEPROM
  * Basta inserir a propriedade, a classe inteira sera armazenada binariamente e depois castada no ato da recuperacao de dados.
