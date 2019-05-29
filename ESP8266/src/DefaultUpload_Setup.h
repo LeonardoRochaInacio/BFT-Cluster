@@ -5,6 +5,7 @@
 #include <StorageManager.h>
 #include <iostream>
 #include <ESP8266Helper.h>
+#include <Communication.h>
 
 void CycleCount();
 
@@ -13,8 +14,11 @@ static double Temperature = 0;
 void DefaultUpload_Setup()
 {
     pinMode(A0, INPUT);
-    CycleCount();
-    
+    FConnectionParams ConnectionParams;
+    ConnectionParams.ConnectionUser = "teste";
+    ConnectionParams.ConnectionPassword = "teste";
+    Communication::TryToConnect(ConnectionParams);
+    //CycleCount();
 }
 
 void DefaultUpload_Loop()
@@ -25,7 +29,7 @@ void DefaultUpload_Loop()
         std::cout << "Current temperature: " << Temperature << std::endl;
     }
 
-    TimerManager::SetSleep(SLEEP_TIME);
+    TimerManager::SetSleep(SLEEP_TIME, EWakeType::RadioFrequency_Enable);
 }
 
 void CycleCount()

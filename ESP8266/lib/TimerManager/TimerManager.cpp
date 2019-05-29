@@ -3,10 +3,7 @@
 #include <sys/time.h>
 #include <iostream>
 
-TimerManager::TimerManager()
-{
-    std::cout << "TimerManager construído";
-}
+TimerManager::TimerManager(){}
 
 void TimerManager::SetRTCTime(long Timestamp_Value)
 {
@@ -24,7 +21,7 @@ long TimerManager::GetCurrentRTCTime()
     return time(NULL);
 }
 
-void TimerManager::SetSleep(int Seconds)
+void TimerManager::SetSleep(int Seconds, EWakeType WakeType)
 {
-    ESP.deepSleep(Seconds*(1000000));
+    ESP.deepSleep(Seconds*(1000000), (RFMode)(WakeType));
 }
