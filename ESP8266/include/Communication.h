@@ -6,6 +6,8 @@
 
 #include <ESP8266WiFi.h>
 #include <TimerManager.h>
+
+
 /**
  * @brief Tipos de resposta do metodo TryToConnect
  * 

@@ -35,4 +35,5 @@ public:
      * @return false 
      */
     static bool CheckResetReason(ResetReason Reason);
+    
 };
