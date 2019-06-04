@@ -1,7 +1,7 @@
 #include <TimerManager.h>
 #include <Arduino.h>
 #include <sys/time.h>
-#include <iostream>
+#include "../../include/Definitions.h"
 
 TimerManager::TimerManager(){}
 
@@ -23,5 +23,6 @@ long TimerManager::GetCurrentRTCTime()
 
 void TimerManager::SetSleep(int Seconds, EWakeType WakeType)
 {
+    LOG("Entrando em modo de deep-sleep por: " << Seconds);
     ESP.deepSleep(Seconds*(1000000), (RFMode)(WakeType));
 }
