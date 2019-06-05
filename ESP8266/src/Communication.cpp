@@ -3,6 +3,9 @@
 #include <ESP8266WiFi.h>
 #include <TimerManager.h>
 
+IPAddress Communication::LasConnectionGateway = IPAddress(0);
+WiFiUDP Communication::UDPInstance;
+
 void Communication::TryToConnect(struct FConnectionParams ConnectionParams)
 {
         /*
@@ -64,7 +67,7 @@ void Communication::TryToConnect(struct FConnectionParams ConnectionParams)
         * Cria um response para abstrair nos callbacks
         */
         EConnectionResponse Response = (WiFi.status() != WL_CONNECTED) ? EConnectionResponse::CON_ERROR : EConnectionResponse::CON_OK;
-
+        
         /*
         * Caso a conexão não tenha resposta positiva, entra em sleep.
         */
@@ -74,7 +77,9 @@ void Communication::TryToConnect(struct FConnectionParams ConnectionParams)
         }
         else
         {
+            LasConnectionGateway = WiFi.gatewayIP();
             LOG("Conectado em: " << ConnectionParams.ConnectionUser);
+            LOG("Gateway atual: " << LasConnectionGateway.toString().c_str());
         }
 
         /*
@@ -83,7 +88,24 @@ void Communication::TryToConnect(struct FConnectionParams ConnectionParams)
         if(ConnectionParams.ConnectionResponseCallback) ConnectionParams.ConnectionResponseCallback(Response);
     }
 
-    void Communication::UDPSend(FConnectionParams ConnectionParams)
+    void Communication::UDPInitialize(int Port)
     {
-        
+        UDPInstance.begin(Port);
+    }
+
+    void Communication::UDPSendMessage(const char* Message, int Port)
+    {
+        if(LasConnectionGateway != IPAddress(0))
+        {
+            if(UDPInstance.beginPacket(LasConnectionGateway, Port))
+            {
+                LOG("Pacote UDP iniciado com sucesso.");
+                UDPInstance.write(Message, strlen(Message)*sizeof(char));
+                LOG("Enviando pacote UDP: {Message: '" << Message << "', IP: '" << LasConnectionGateway.toString().c_str() << "', Port: '" << Port << "'}");
+            }      
+            if(UDPInstance.endPacket())
+            {
+                LOG("Pacote UDP enviado com sucesso.");
+            }
+        }
     }

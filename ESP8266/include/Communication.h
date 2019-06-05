@@ -1,3 +1,5 @@
+#include <WiFiUdp.h>
+
 #define MAX_ATTEMPT 30
 #define TIME_BETWEEN_ATTEMPT 200
 
@@ -70,6 +72,18 @@ class Communication
 public:
 
     /**
+     * @brief Instância UDP para manipular mensagens e conexões
+     * 
+     */
+    static WiFiUDP UDPInstance;
+
+    /**
+     * @brief Armazena o gateway da última conexão
+     * 
+     */
+    static IPAddress LasConnectionGateway;
+
+    /**
      * @brief Tenta a conexão
      * 
      * @param ConnectionParams 
@@ -80,6 +94,12 @@ public:
      * @brief Envia uma mensagem UDP
      * 
      */
-    static void UDPSend(FConnectionParams ConnectionParams);
+    static void UDPInitialize(int Port);
+
+    /**
+     * @brief Envia uma mensagem UDP
+     * 
+     */
+    static void UDPSendMessage(const char* Message, int Port);
 
 };

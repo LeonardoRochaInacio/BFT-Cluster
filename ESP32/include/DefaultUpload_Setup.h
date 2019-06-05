@@ -3,6 +3,7 @@
 #include <esp_sleep.h>
 #include <WiFi.h>
 #include <esp_wifi.h>
+#include <WiFiUdp.h>
 
 void PrintStations()
 {
@@ -33,16 +34,31 @@ void PrintStations()
   Serial.println("-----------------");
 }
 
+static WiFiUDP UDPInstance;
+static char incomingPacket[256];
+
 void DefaultUpload_Setup()
 {
     WiFi.mode(wifi_mode_t::WIFI_MODE_APSTA);
-    WiFi.softAP("ESP32_01");
+    WiFi.softAP(MASTER_STATION_NAME);
+    UDPInstance.begin(2000);
     LOG("ESP32 @ MAC: " << WiFi.softAPmacAddress().c_str());
-    //WiFi.softAPmacAddress()
+    LOG("ESP32 @ IP: " << WiFi.softAPIP().toString().c_str());
 }
 
 void DefaultUpload_Loop()
 {
     PrintStations();  
-    delay(2000);
+    int packetSize = UDPInstance.parsePacket();
+    if (packetSize)
+    {
+      Serial.printf("Received %d bytes from %s, port %d\n", packetSize, UDPInstance.remoteIP().toString().c_str(), UDPInstance.remotePort());
+      int len = UDPInstance.read(incomingPacket, 255);
+      if (len > 0)
+      {
+        incomingPacket[len] = '\0';
+      }
+      Serial.printf("UDP packet contents: %s\n", incomingPacket);
+    }
+    delay(250);
 }

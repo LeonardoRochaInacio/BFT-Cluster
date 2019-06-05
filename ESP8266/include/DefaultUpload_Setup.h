@@ -6,6 +6,7 @@
 #include <iostream>
 #include <ESP8266Helper.h>
 #include <Communication.h>
+#include <string>
 
 /**
  * @brief Última temperatura registrada
@@ -36,6 +37,7 @@ void DefaultUpload_Setup()
     * Habilita pino para leitura analogica do sensor.
     */
     pinMode(A0, INPUT);
+    Communication::UDPInitialize(2000);
     //CycleCount();
 }
 
@@ -71,13 +73,24 @@ void CycleCount()
     StorageManager::StoreData_RTCMemory<ClockData>(CLKData);    
 }
 
+/**
+ * @brief Funcao que é passada no TryToConnect
+ * 
+ * @param Rsp Resposta da conexao
+ */
 void ConnectionResponse(EConnectionResponse Rsp)
 {
     if(Rsp == EConnectionResponse::CON_OK)
     {
         LastTemperature = analogRead(A0)*TEMPERATURE_PROPORTION;
         LOG("Temperatura atual: " << LastTemperature);
-
+        char LastTemperature_Char[12];
+        sprintf(LastTemperature_Char, "%f", LastTemperature);
+        Communication::UDPSendMessage(LastTemperature_Char,2000);
+        /**
+         * @brief Delay extremamente importante, caso não exista, a antena se desligará antes mesmo de transmitir os bytes empacotados no UDP
+         */
+        delay(100);
         TimerManager::SetSleep(SLEEP_TIME, EWakeType::RadioFrequency_Enable);
     }
 }
