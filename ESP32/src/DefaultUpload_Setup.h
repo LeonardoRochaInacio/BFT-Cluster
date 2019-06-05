@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <iostream>
+#include <Definitions.h>
 #include <esp_sleep.h>
 #include <WiFi.h>
 #include <esp_wifi.h>
@@ -37,7 +37,8 @@ void DefaultUpload_Setup()
 {
     WiFi.mode(wifi_mode_t::WIFI_MODE_APSTA);
     WiFi.softAP("ESP32_01");
-    Serial.println(WiFi.softAPIP());
+    LOG("ESP32 @ MAC: " << WiFi.softAPmacAddress().c_str());
+    //WiFi.softAPmacAddress()
 }
 
 void DefaultUpload_Loop()

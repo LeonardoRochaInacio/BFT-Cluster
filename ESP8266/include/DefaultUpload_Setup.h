@@ -45,10 +45,13 @@ void DefaultUpload_Setup()
  */
 void DefaultUpload_Loop()
 {
+
     FConnectionParams ConnectionParams;
     ConnectionParams.ConnectionUser = "ESP32_01";
     ConnectionParams.ConnectionPassword = "";
     ConnectionParams.ConnectionResponseCallback = ConnectionResponse;
+    ConnectionParams.UseBSSID = true;
+    ConnectionParams.BSSID = (uint8_t*)"\x30\xAE\xA4\x05\x1F\xED";
     Communication::TryToConnect(ConnectionParams);
 }
 
