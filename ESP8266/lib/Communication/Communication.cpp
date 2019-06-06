@@ -1,7 +1,7 @@
-#include <Definitions.h>
-#include <Communication.h>
+#include "Communication.h"
 #include <ESP8266WiFi.h>
 #include <TimerManager.h>
+#include "../../include/Definitions.h"
 
 IPAddress Communication::LasConnectionGateway = IPAddress(0);
 WiFiUDP Communication::UDPInstance;
