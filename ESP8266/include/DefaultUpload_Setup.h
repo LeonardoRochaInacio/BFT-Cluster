@@ -12,7 +12,7 @@
  * @brief Última temperatura registrada
  * 
  */
-static float LastTemperature;
+static float LastTemperature; 
 
 /**
  * @brief Executa o contador de ciclos, usado para operações de sincronização
