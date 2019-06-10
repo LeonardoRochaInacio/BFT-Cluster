@@ -24,7 +24,7 @@ void Communication::TryToConnect(struct FConnectionParams ConnectionParams)
         /*
         * Inicia uma tentativa, caso nao esteja conectado ainda
         */
-        LOG("Tentando conexão para: " << ConnectionParams.ConnectionUser << "@" << ConnectionParams.ConnectionPassword);
+        LOG("[Wi-Fi] Tentando conexão para: " << ConnectionParams.ConnectionUser << "@" << ConnectionParams.ConnectionPassword);
 
         /*
         *  Executa callback de pre conexao
@@ -58,7 +58,7 @@ void Communication::TryToConnect(struct FConnectionParams ConnectionParams)
         */
         while((WiFi.status() == WL_IDLE_STATUS || WiFi.status() == WL_DISCONNECTED) && CurrentAttempts <= MAX_ATTEMPT)
         {
-            LOG("Estado da conexão: " << WiFi.status() << " | Tentativa: " << (int)CurrentAttempts); 
+            LOG("[Wi-Fi] Estado da conexão: " << WiFi.status() << " | Tentativa: " << (int)CurrentAttempts); 
             delay(TIME_BETWEEN_ATTEMPT);
             CurrentAttempts++;
         }
@@ -78,8 +78,8 @@ void Communication::TryToConnect(struct FConnectionParams ConnectionParams)
         else
         {
             LasConnectionGateway = WiFi.gatewayIP();
-            LOG("Conectado em: " << ConnectionParams.ConnectionUser);
-            LOG("Gateway atual: " << LasConnectionGateway.toString().c_str());
+            LOG("[Wi-Fi] Conectado em: " << ConnectionParams.ConnectionUser);
+            LOG("[Wi-Fi] Gateway atual: " << LasConnectionGateway.toString().c_str());
         }
 
         /*
@@ -99,13 +99,13 @@ void Communication::TryToConnect(struct FConnectionParams ConnectionParams)
         {
             if(UDPInstance.beginPacket(LasConnectionGateway, Port))
             {
-                LOG("Pacote UDP iniciado com sucesso.");
+                LOG("[UDP] Pacote UDP iniciado com sucesso.");
                 UDPInstance.write(Message, strlen(Message)*sizeof(char));
-                LOG("Enviando pacote UDP: {Message: '" << Message << "', IP: '" << LasConnectionGateway.toString().c_str() << "', Port: '" << Port << "'}");
+                LOG("[UDP] Enviando pacote UDP: {Message: '" << Message << "', IP: '" << LasConnectionGateway.toString().c_str() << "', Port: '" << Port << "'}");
             }      
             if(UDPInstance.endPacket())
             {
-                LOG("Pacote UDP enviado com sucesso.");
+                LOG("[UDP] Pacote UDP enviado com sucesso.");
             }
         }
     }

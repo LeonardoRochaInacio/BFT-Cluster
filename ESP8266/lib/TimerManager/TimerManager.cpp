@@ -23,6 +23,6 @@ long TimerManager::GetCurrentRTCTime()
 
 void TimerManager::SetSleep(int Seconds, EWakeType WakeType)
 {
-    LOG("Entrando em modo de deep-sleep por: " << Seconds);
+    LOG("[SM] Entrando em modo de deep-sleep por: " << Seconds);
     ESP.deepSleep(Seconds*(1000000), (RFMode)(WakeType));
 }
